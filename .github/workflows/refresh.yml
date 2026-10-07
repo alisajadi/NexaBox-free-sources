@@ -1,0 +1,32 @@
+name: Refresh public connection list
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/30 * * * *'
+  push:
+    paths: [sources.txt, refresh.py, test_refresh.py, .github/workflows/refresh.yml]
+permissions:
+  contents: write
+concurrency:
+  group: public-feed
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python -m unittest test_refresh.py
+      - run: python refresh.py
+      - name: Publish data only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add free-connection.txt channels
+          if ! git diff --cached --quiet; then
+            git commit -m 'Refresh public connection snapshots'
+            git push
+          fi
