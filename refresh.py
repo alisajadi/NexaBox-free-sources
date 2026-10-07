@@ -96,6 +96,7 @@ def refresh(root, fetch=None):
             index.append("https://raw.githubusercontent.com/alisajadi/NexaBox-free-sources/main/channels/" + name + ".txt")
     if len(index) == 1:
         raise ValueError("No public feed or cached snapshot; previous index retained")
+    index = list(dict.fromkeys(index))
     (root / "free-connection.txt").write_text("\n".join(index) + "\n", encoding="utf-8")
     print(json.dumps({"channels_refreshed": successes, "channel_errors": errors, "index_references": len(index)-1}))
     return successes, errors

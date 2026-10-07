@@ -1,5 +1,6 @@
 # Public sources only. One HTTPS source URL per line. Never put purchased profiles here.
 https://t.me/s/LonUp_M
+https://raw.githubusercontent.com/alisajadi/NexaBox-free-sources/main/channels/LonUp_M.txt
 https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/sub_merge.txt
 https://raw.githubusercontent.com/ALIILAPRO/v2rayNG-Config/main/sub.txt
 https://raw.githubusercontent.com/alisajadi/NexaBox-free-sources/main/lists/user-proxies.txt
