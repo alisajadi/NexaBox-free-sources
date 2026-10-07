@@ -7,6 +7,11 @@
 لینک ثابت برنامه:
 https://raw.githubusercontent.com/alisajadi/NexaBox-free-sources/main/free-connection.txt
 
+انتشار در ۷ اکتبر ۲۰۲۶ انجام شد و اولین دریافت کانال در GitHub موفق بود.
+نسخهٔ `0.7.0-preview` برنامه همین لینک را دارد؛ دریافت از فایل GitHub با
+پارسر خود NexaBox و بدون مراجعهٔ مستقیم به تلگرام آزمایش شده است.
+گزارش آزمون در [VALIDATION.md](VALIDATION.md) ثبت شده است.
+
 برای اضافه‌کردن کانال یا سورس، فایل `sources.txt` را باز کنید، آیکون مداد
 Edit را بزنید و در هر خط یک لینک HTTPS قرار دهید. سپس Commit changes را
 بزنید. نمونه:
