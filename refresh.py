@@ -53,6 +53,26 @@ def extract(body):
     links = [x for x in links if share(x)]
     return list(dict.fromkeys(links))[:MAX_LINKS]
 
+def channel_links(raw, fetch):
+    posts = {}
+    url = raw
+    for _ in range(3):
+        body = fetch(url)
+        if len(body) > MAX_BODY: raise ValueError("Source exceeds 2 MiB")
+        text = body.decode("utf-8", errors="replace")
+        marks = list(re.finditer(r"""data-post=["'][A-Za-z0-9_]+/([0-9]+)["']""", text))
+        if not marks: return extract(body)
+        added = 0
+        for i, mark in enumerate(marks):
+            post = int(mark.group(1))
+            if post not in posts:
+                end = marks[i+1].start() if i+1 < len(marks) else len(text)
+                posts[post] = extract(text[mark.end():end].encode("utf-8"))
+                added += 1
+        if len(posts) >= 20 or not added: break
+        url = raw + "?before=" + str(min(int(m.group(1)) for m in marks))
+    return list(dict.fromkeys(link for post in sorted(posts, reverse=True)[:20] for link in posts[post]))[:MAX_LINKS]
+
 def refresh(root, fetch=None):
     root = Path(root)
     if fetch is None:
@@ -80,10 +100,7 @@ def refresh(root, fetch=None):
             continue
         path = root / "channels" / (name + ".txt")
         try:
-            body = fetch(raw)
-            if len(body) > MAX_BODY:
-                raise ValueError("Source exceeds 2 MiB")
-            links = extract(body)
+            links = channel_links(raw, fetch)
             if not links:
                 raise ValueError("No supported public share links")
             path.parent.mkdir(exist_ok=True)

@@ -2,7 +2,7 @@ name: Refresh public connection list
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/30 * * * *'
+    - cron: '*/5 * * * *'
   push:
     paths: [sources.txt, refresh.py, test_refresh.py, .github/workflows/refresh.yml]
 permissions:
